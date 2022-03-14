@@ -17,6 +17,9 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  username: <%= ENV.fetch('POSTGRES_USERNAME', Rails.application.credentials.dig(:postgresql, :username)) %>
+  password: <%= ENV.fetch('POSTGRES_PASSWORD', Rails.application.credentials.dig(:postgresql, :password)) %>
+
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
@@ -82,5 +85,3 @@ test:
 production:
   <<: *default
   database: shafa_production
-  username: shafa
-  password: <%= ENV['SHAFA_DATABASE_PASSWORD'] %>
