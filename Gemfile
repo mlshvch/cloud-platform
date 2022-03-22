@@ -50,6 +50,7 @@ group :test do
   gem 'rspec-core', '~> 3.11'
   gem 'rspec-expectations', '~> 3.11'
   gem 'rspec-rails', '~> 5.1', '>= 5.1.1'
+  gem 'simplecov', '~> 0.21.2'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
