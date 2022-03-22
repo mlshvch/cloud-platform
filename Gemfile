@@ -36,6 +36,7 @@ group :development, :test do
   gem 'rubocop-graphql', '~> 0.13.0'
   gem 'rubocop-rails', '~> 2.13', '>= 2.13.2'
   gem 'rubocop-rspec', '~> 2.9'
+  gem 'secure_headers', '~> 6.3', '>= 6.3.3'
 end
 
 group :development do
