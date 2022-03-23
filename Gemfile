@@ -34,6 +34,7 @@ group :development, :test do
   gem 'devise', '~> 4.8', '>= 4.8.1'
   gem 'graphql', '~> 1.12'
   gem 'graphql_rails', '~> 2.2'
+  gem 'omniauth', '~> 2.0', '>= 2.0.4'
   gem 'rubocop-graphql', '~> 0.13.0'
   gem 'rubocop-rails', '~> 2.13', '>= 2.13.2'
   gem 'rubocop-rspec', '~> 2.9'
