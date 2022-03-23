@@ -30,7 +30,7 @@ gem 'rubocop', '>= 1.26'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'bullet', '~> 5.0'
+  gem 'bullet', '~> 6.1', '>= 6.1.5'
   gem 'graphql', '~> 1.12'
   gem 'graphql_rails', '~> 2.2'
   gem 'rubocop-graphql', '~> 0.13.0'
