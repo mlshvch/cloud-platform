@@ -70,4 +70,16 @@ Rails.application.configure do
     Bullet_bullet_logger = true
     Bullet.console = true
   end
+
+  SecureHeaders::Configuration.default do; end
+
+
+  SecureHeaders::Configuration.override(:api) do |config|
+    config.csp = { default_src: 'none' }
+    config.hsts = SecureHeaders::OPT_OUT
+    config.x_frame_options = SecureHeaders::OPT_OUT
+    config.x_content_type_options = SecureHeaders::OPT_OUT
+    config.x_xss_protection = SecureHeaders::OPT_OUT
+    config.x_permitted_cross_domain_policies = SecureHeaders::OPT_OUT
+  end
 end
