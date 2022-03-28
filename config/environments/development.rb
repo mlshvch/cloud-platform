@@ -82,4 +82,6 @@ Rails.application.configure do
     config.x_xss_protection = SecureHeaders::OPT_OUT
     config.x_permitted_cross_domain_policies = SecureHeaders::OPT_OUT
   end
+
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3001 }
 end
