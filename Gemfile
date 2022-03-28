@@ -32,6 +32,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'bullet', '~> 6.1', '>= 6.1.5'
   gem 'devise', '~> 4.8', '>= 4.8.1'
+  gem 'devise_token_auth'
   gem 'graphql', '~> 1.12'
   gem 'graphql_rails', '~> 2.2'
   gem 'omniauth', '~> 2.0', '>= 2.0.4'
