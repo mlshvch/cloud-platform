@@ -10,5 +10,6 @@ module Types
     field :username, String, null: true
     field :password, String, null: false
     field :confirm_password, String, null: false
+    field :tokens, String
   end
 end

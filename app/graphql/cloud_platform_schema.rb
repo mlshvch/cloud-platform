@@ -2,6 +2,13 @@
 
 # CloudPlatformSchema Class
 class CloudPlatformSchema < GraphQL::Schema
+  use GraphqlDevise::SchemaPlugin.new(
+    query: Types::QueryType,
+    mutation: Types::MutationType,
+    resource_loaders: [
+      GraphqlDevise::ResourceLoader.new(User, only: %i[login confirm_registration_with_token])
+    ]
+  )
   mutation(Types::MutationType)
   query(Types::QueryType)
 
