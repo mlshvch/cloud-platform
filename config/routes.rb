@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     at: 'api/v1/graphql_auth',
     authenticatable_type: Types::UserType,
     operations: {
-      login: Mutations::SignInUser
+      login: Mutations::SignInUser,
+      sign_up: Mutations::SignUpUser,
+      logout: Mutations::SignOutUser
     })
 
 
