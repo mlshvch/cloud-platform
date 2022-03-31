@@ -31,8 +31,15 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'bullet', '~> 6.1', '>= 6.1.5'
+  gem 'devise', '~> 4.8', '>= 4.8.1'
+  gem 'devise_token_auth'
   gem 'graphql', '~> 1.12'
+  gem 'graphql_devise', '~> 0.18.2'
   gem 'graphql_rails', '~> 2.2'
+  gem 'omniauth', '~> 2.0', '>= 2.0.4'
+  gem 'pry', '~> 0.13.0'
+  gem 'pry-byebug', '~> 3.9'
+  gem 'pry-rails', '~> 0.3.9'
   gem 'rubocop-graphql', '~> 0.13.0'
   gem 'rubocop-rails', '~> 2.13', '>= 2.13.2'
   gem 'rubocop-rspec', '~> 2.9'

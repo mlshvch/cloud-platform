@@ -10,6 +10,7 @@ AllCops:
     - 'tmp/**/*'
     - 'lib/**/*'
     - 'db/schema.rb'
+    - 'db/migrate/**'
     - 'vendor/**/*'
     - '.git/**/*'
     - 'Gemfile'
