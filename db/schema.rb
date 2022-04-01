@@ -19,10 +19,10 @@ ActiveRecord::Schema.define(version: 2022_04_01_082742) do
     t.bigint "user_id", null: false
     t.string "name", limit: 30
     t.string "endpoint"
-    t.bigint "serviceable_id"
-    t.string "serviceable_type"
     t.integer "state"
     t.integer "access"
+    t.bigint "serviceable_id"
+    t.string "serviceable_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["endpoint"], name: "index_services_on_endpoint", unique: true

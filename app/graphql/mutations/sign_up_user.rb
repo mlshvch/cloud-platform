@@ -15,7 +15,7 @@ module Mutations
     argument :password_confirmation, String, required: true
 
     type Types::UserType
-    
+
     def resolve(**params)
       sign_up_user(params)
     end

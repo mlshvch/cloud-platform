@@ -7,6 +7,5 @@ module Mutations
     def resolve(email:, password:)
       super.merge(user: context[:current_resource])
     end
-
   end
 end
