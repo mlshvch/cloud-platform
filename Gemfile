@@ -34,6 +34,8 @@ group :development, :test do
   gem 'bullet', '~> 6.1', '>= 6.1.5'
   gem 'devise', '~> 4.8', '>= 4.8.1'
   gem 'devise_token_auth'
+  gem 'dockly', '~> 4.4'
+  gem 'docker-api', '~> 2.2'
   gem 'graphql', '~> 1.12'
   gem 'graphql_devise', '~> 0.18.2'
   gem 'graphql_rails', '~> 2.2'
