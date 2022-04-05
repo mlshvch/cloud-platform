@@ -28,6 +28,8 @@ module CloudPlatform
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
 
+    config.generators { |g| g.test_framework :rspec }
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
