@@ -17,6 +17,7 @@ AllCops:
     - 'Rakefile'
     - 'Gemfile.lock'
     - 'config.ru'
+    - 'services/demo/**/*'
 
 Layout/LineLength:
   Max: 150
