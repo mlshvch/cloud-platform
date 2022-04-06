@@ -47,6 +47,7 @@ group :development, :test do
   gem 'rubocop-rails', '~> 2.13', '>= 2.13.2'
   gem 'rubocop-rspec', '~> 2.9'
   gem 'secure_headers', '~> 6.3', '>= 6.3.3'
+  gem 'sidekiq', '~> 6.4', '>= 6.4.1'
 end
 
 group :development do
