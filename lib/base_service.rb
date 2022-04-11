@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'docker'
+require 'fileutils'
 
 module BaseService
 	extend ActiveModel::Naming
@@ -10,22 +11,22 @@ module BaseService
 		super if create_service
 	end
 
-	def create_service(dockerfile: "#{Rails.root}/lib/dockerfiles/Dockerfile.#{self.model_name.name}", directory: "#{Rails.root}/services/demo/#{self .model_name.singular}")
+	def create_service
+		directory = "#{Rails.root}/services/demo/#{self.model_name.singular}"
+		dockerfile = "#{Rails.root}/lib/dockerfiles/Dockerfile.#{self.model_name.name}"
+		FileUtils.cp(dockerfile, directory)
 
-		`docker build -f #{dockerfile} #{directory}`.split(" ").last
-		# next implementation with docker_api throws ocker::Error::ServerError: {"message":"Cannot locate specified Dockerfile: ...}
-
-		# if File.directory?(directory)
-		# 	Docker::Image.build_from_dir(
-		# 		directory,
-		# 		{ 'dockerfile' => dockerfile }
-		# 	) do |v|
-		# 		if (log = JSON.parse(v)) && log.has_key?("stream")
-		# 			$stdout.puts log["stream"]
-		# 		end
-		# 	end
-		# else
-		# 	raise LoadError
-		# end
+		if File.directory?(directory)
+			Docker::Image.build_from_dir(
+				directory,
+				{ 'dockerfile' => "Dockerfile.#{self.model_name.name}" }
+			) do |v|
+				if (log = JSON.parse(v)) && log.has_key?("stream")
+					$stdout.puts log["stream"]
+				end
+			end
+		else
+			raise LoadError
+		end
 	end
 end
