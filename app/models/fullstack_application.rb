@@ -17,11 +17,14 @@ class FullstackApplication < ApplicationRecord
     event :start do
       transitions from: :configuring,
                   to: :sleeping,
-                  guards: :configuring_needed?
+                  guards: :configuring_needed?,
+                  success: proc { pp 'sleeping' }
 
       transitions from: :sleeping,
                   to: :starting,
-                  guards: :configured?
+                  guards: :configured?,
+                  success: proc { pp 'starting' }
+
 
       transitions from: :starting,
                   to: :running
