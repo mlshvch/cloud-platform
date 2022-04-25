@@ -14,6 +14,8 @@ require "action_view/railtie"
 require "action_cable/engine"
 # require "sprockets/railtie"
 require "rails/test_unit/railtie"
+require 'rspec'
+require 'rspec/rails'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -29,7 +31,7 @@ module CloudPlatform
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
 
     config.generators { |g| g.test_framework :rspec }
-
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
     config.active_job.queue_adapter = :sidekiq
     # Configuration for the application, engines, and railties goes here.
     #
