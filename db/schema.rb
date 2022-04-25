@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_11_075621) do
+ActiveRecord::Schema.define(version: 2022_04_14_075238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,12 @@ ActiveRecord::Schema.define(version: 2022_04_11_075621) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "state"
+    t.string "k8s_service_id"
+    t.string "service_ip"
+    t.string "image_id"
+    t.string "container_id"
+    t.index ["k8s_service_id"], name: "index_fullstack_applications_on_k8s_service_id", unique: true
+    t.index ["service_ip"], name: "index_fullstack_applications_on_service_ip", unique: true
   end
 
   create_table "services", force: :cascade do |t|

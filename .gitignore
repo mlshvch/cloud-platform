@@ -32,4 +32,4 @@
 /.vscode/**
 
 services/*
-!/services/demo/
+!/services/demo/**

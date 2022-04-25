@@ -5,15 +5,9 @@ require 'fileutils'
 module BaseService
 	extend ActiveModel::Naming
 
-	private
-
-	def _create_record
-		super if create_service
-	end
-
-	def create_service
-		directory = "#{Rails.root}/services/demo/#{self.model_name.singular}"
-		dockerfile = "#{Rails.root}/lib/dockerfiles/Dockerfile.#{self.model_name.name}"
+	def create_fullstack_app_image(directory, dockerfile)
+		# directory = "#{Rails.root}/services/demo/#{self.model_name.singular}"
+		# dockerfile = "#{Rails.root}/lib/dockerfiles/Dockerfile.#{self.model_name.name}"
 		FileUtils.cp(dockerfile, directory)
 
 		if File.directory?(directory)
@@ -25,8 +19,14 @@ module BaseService
 					$stdout.puts log["stream"]
 				end
 			end
+			self.image
 		else
 			raise LoadError
 		end
 	end
+
+	def create_container
+
+	end
+
 end

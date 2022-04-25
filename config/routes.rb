@@ -9,9 +9,11 @@ Rails.application.routes.draw do
     authenticatable_type: Types::UserType,
     operations: {
       login: Mutations::SignInUser,
-      sign_up: Mutations::SignUpUser,
+      register: Mutations::SignUpUser,
       logout: Mutations::SignOutUser
     })
+
+  post '/graphql', to: 'graphql#execute'
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
