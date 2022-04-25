@@ -34,6 +34,8 @@ group :development, :test do
   gem 'bullet', '~> 6.1', '>= 6.1.5'
   gem 'devise', '~> 4.8', '>= 4.8.1'
   gem 'devise_token_auth'
+  gem 'dockly', '~> 4.4'
+  gem 'docker-api', '~> 2.2'
   gem 'graphql', '~> 1.12'
   gem 'graphql_devise', '~> 0.18.2'
   gem 'graphql_rails', '~> 2.2'
@@ -45,6 +47,7 @@ group :development, :test do
   gem 'rubocop-rails', '~> 2.13', '>= 2.13.2'
   gem 'rubocop-rspec', '~> 2.9'
   gem 'secure_headers', '~> 6.3', '>= 6.3.3'
+  gem 'sidekiq', '~> 6.4', '>= 6.4.1'
 end
 
 group :development do

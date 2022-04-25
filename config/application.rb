@@ -31,7 +31,8 @@ module CloudPlatform
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
 
     config.generators { |g| g.test_framework :rspec }
-
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+    config.active_job.queue_adapter = :sidekiq
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
