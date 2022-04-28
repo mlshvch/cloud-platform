@@ -1,6 +1,6 @@
 rubocop:
   enabled: true
-  config_file: /server/graphql-api/.rubocop.yml
+  config_file: .rubocop.yml
 
 eslint:
   enabled: true
