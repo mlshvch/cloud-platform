@@ -8,8 +8,8 @@
 server/graphql-api/.bundle
 
 # Ignore all logfiles and tempfiles.
-server/graphql-api/log/*
-server/graphql-api/tmp/*
+/server/graphql-api/log/*
+/server/graphql-api/tmp/
 !server/graphql-api/log/.keep
 !server/graphql-api/tmp/.keep
 
