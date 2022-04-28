@@ -5,31 +5,31 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-/.bundle
+server/graphql-api/.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
+server/graphql-api/log/*
+server/graphql-api/tmp/*
+!server/graphql-api/log/.keep
+!server/graphql-api/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
-/tmp/pids/*
-!/tmp/pids/
-!/tmp/pids/.keep
+server/graphql-api/tmp/pids/*
+!server/graphql-api/tmp/pids/
+!server/graphql-api/tmp/pids/.keep
 
 # Ignore uploaded files in development.
-/storage/*
-!/storage/.keep
-.byebug_history
+server/graphql-api/storage/*
+!server/graphql-api/storage/.keep
+server/graphql-api/.byebug_history
 
 # Ignore master key for decrypting credentials and more.
-/config/master.key
+server/graphql-api/config/master.key
 
 # Ignore IDE files
 
 /.idea/**
 /.vscode/**
 
-services/*
-!/services/demo/**
+server/graphql-api/services/*
+!server/graphql-api/services/demo/**
