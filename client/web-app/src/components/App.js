@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
+import routes from "../Routes";
 
 function Copyright(props) {
   return (
@@ -40,6 +41,7 @@ const tiers = [
     ],
     buttonText: 'Sign up for free',
     buttonVariant: 'outlined',
+    link: routes.sign_up
   },
   {
     title: 'Pro',
@@ -53,6 +55,7 @@ const tiers = [
     ],
     buttonText: 'Get started',
     buttonVariant: 'contained',
+    link: routes.sign_up
   },
   {
     title: 'Enterprise',
@@ -93,7 +96,7 @@ const footers = [
   },
 ];
 
-function PricingContent() {
+const App = () => {
   return (
       <React.Fragment>
         <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -134,8 +137,11 @@ function PricingContent() {
                 Support
               </Link>
             </nav>
-            <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-              Login
+            <Button href={routes.sign_in} variant="text" sx={{ my: 1, mx: 1.5 }}>
+              Sign In
+            </Button>
+            <Button href={routes.sign_up} variant='contained' sx={{ my: 1, mx: 1.5 }}>
+              Sign Up
             </Button>
           </Toolbar>
         </AppBar>
@@ -214,7 +220,7 @@ function PricingContent() {
                       </ul>
                     </CardContent>
                     <CardActions>
-                      <Button fullWidth variant={tier.buttonVariant}>
+                      <Button fullWidth href={tier.link} variant={tier.buttonVariant}>
                         {tier.buttonText}
                       </Button>
                     </CardActions>
@@ -242,7 +248,7 @@ function PricingContent() {
                   <ul>
                     {footer.description.map((item) => (
                         <li key={item}>
-                          <Link href="#" variant="subtitle1" color="text.secondary">
+                          <Link href='#' variant="subtitle1" color="text.secondary">
                             {item}
                           </Link>
                         </li>
@@ -258,6 +264,4 @@ function PricingContent() {
   );
 }
 
-export default function Pricing() {
-  return <PricingContent />;
-}
+export default App;
