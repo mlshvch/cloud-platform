@@ -1,5 +1,7 @@
+import Button from "@mui/material/Button";
+
 import * as React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import {styled, createTheme, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -17,6 +19,10 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import {gql, useMutation} from "@apollo/client";
+import {useNavigate} from "react-router-dom";
+import routes from "../Routes";
+import {useEffect, useState} from "react";
 
 function Copyright(props) {
     return (
@@ -35,7 +41,7 @@ const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
+})(({theme, open}) => ({
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -51,8 +57,8 @@ const AppBar = styled(MuiAppBar, {
     }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
+const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
+    ({theme, open}) => ({
         '& .MuiDrawer-paper': {
             position: 'relative',
             whiteSpace: 'nowrap',
@@ -77,18 +83,69 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
+const LOGOUT = gql`
+    mutation UserLogout() {
+        SignOutUser {
+            status
+        }
+    }
+`;
+
+const SERVICES = gql`
+    mutation GetServices() {
+        GetServices {
+            status
+        }
+    }
+`;
+
 const mdTheme = createTheme();
 
+
 function DashboardContent() {
+    const navigate = useNavigate()
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
+    const [exit] = useMutation(LOGOUT);
+
+    const logout = () => {
+        exit()
+            .then(() => localStorage.removeItem('cred'))
+            .then(navigate(routes.home))
+    }
+
+    const [services, setServices] = useState([]);
+
+
+    useEffect(async () => {
+        setInterval(getData, 5000);
+        }
+    )
+
+    async function getData() {
+        try {
+            const res = await fetch('https://api.apijson.com/...'); // TODO create mutation
+            const blocks = await res.json();
+            setServices(prevState => {
+                    if (prevState !== services) {
+                        return res
+                    }
+                }
+            )
+        } catch
+            (e) {
+            console.log(e);
+        }
+    }
+
+
     return (
         <ThemeProvider theme={mdTheme}>
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
+            <Box sx={{display: 'flex'}}>
+                <CssBaseline/>
                 <AppBar position="absolute" open={open}>
                     <Toolbar
                         sx={{
@@ -102,25 +159,26 @@ function DashboardContent() {
                             onClick={toggleDrawer}
                             sx={{
                                 marginRight: '36px',
-                                ...(open && { display: 'none' }),
+                                ...(open && {display: 'none'}),
                             }}
                         >
-                            <MenuIcon />
+                            <MenuIcon/>
                         </IconButton>
                         <Typography
                             component="h1"
                             variant="h6"
                             color="inherit"
                             noWrap
-                            sx={{ flexGrow: 1 }}
+                            sx={{flexGrow: 1}}
                         >
                             Dashboard
                         </Typography>
                         <IconButton color="inherit">
                             <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
+                                <NotificationsIcon/>
                             </Badge>
                         </IconButton>
+
                     </Toolbar>
                 </AppBar>
                 <Drawer variant="permanent" open={open}>
@@ -133,12 +191,12 @@ function DashboardContent() {
                         }}
                     >
                         <IconButton onClick={toggleDrawer}>
-                            <ChevronLeftIcon />
+                            <ChevronLeftIcon/>
                         </IconButton>
                     </Toolbar>
-                    <Divider />
+                    <Divider/>
                     <List component="nav">
-                        <Divider sx={{ my: 1 }} />
+                        <Divider sx={{my: 1}}/>
                     </List>
                 </Drawer>
                 <Box
@@ -153,8 +211,8 @@ function DashboardContent() {
                         overflow: 'auto',
                     }}
                 >
-                    <Toolbar />
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                    <Toolbar/>
+                    <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={8} lg={9}>
                                 <Paper
@@ -179,18 +237,20 @@ function DashboardContent() {
                                 </Paper>
                             </Grid>
                             <Grid item xs={12}>
-                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
                                 </Paper>
                             </Grid>
                         </Grid>
-                        <Copyright sx={{ pt: 4 }} />
+                        <Copyright sx={{pt: 4}}/>
                     </Container>
                 </Box>
             </Box>
+            <Button color='secondary' onClick={logout}>LOGOUT</Button>
+            <p>{services}</p>
         </ThemeProvider>
     );
 }
 
 export default function Dashboard() {
-    return <DashboardContent />;
+    return <DashboardContent/>;
 }

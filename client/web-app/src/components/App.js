@@ -15,6 +15,7 @@ import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import routes from "../Routes";
+import {ApolloProvider} from "@apollo/client";
 
 function Copyright(props) {
   return (

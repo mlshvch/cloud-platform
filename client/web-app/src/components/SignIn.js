@@ -11,8 +11,12 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import routes from '../Routes';
+import {useState} from "react";
+import {ApolloClient, ApolloProvider, gql, InMemoryCache, useMutation} from "@apollo/client";
+import { useNavigate } from 'react-router-dom';
+
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -26,18 +30,51 @@ function Copyright(props) {
     );
 }
 
+const LOGIN_MUTATION = gql`
+    mutation UserLogin($email: String!, $password: String!) {
+        userLogin(email: $email, password: $password) {
+            credentials {
+                accessToken
+                uid
+                tokenType
+                client
+                expiry
+            }
+        }
+    }
+`;
+
+
 const theme = createTheme();
 
 export default function SignIn() {
+
+    const [login, {error, reset}] = useMutation(LOGIN_MUTATION);
+
+    const [data, setData] = useState({uid: '', password: ''})
+
+
+    const handleChange = e => {
+        const {name, value} = e.target;
+        setData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const navigate = useNavigate()
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        login({variables: {email: data.uid, password: data.password}})
+            .then(response => localStorage.setItem('cred', JSON.stringify(response.data.userLogin.credentials)))
+        navigate(`/${routes.home}`)
     };
 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                <CssBaseline/>
                 <Box
                     sx={{
                         marginTop: 8,
@@ -46,22 +83,23 @@ export default function SignIn() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
+                    <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                        <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} onDismiss={() => reset()} noValidate sx={{mt: 1}}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
+                            id="uid"
                             label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            name="uid"
+                            autoComplete="uid"
                             autoFocus
+                            onChange={handleChange}
                         />
                         <TextField
                             margin="normal"
@@ -72,16 +110,18 @@ export default function SignIn() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={handleChange}
+
                         />
                         <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
+                            control={<Checkbox value="remember" color="primary"/>}
                             label="Remember me"
                         />
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{mt: 3, mb: 2}}
                         >
                             Sign In
                         </Button>
@@ -99,7 +139,7 @@ export default function SignIn() {
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
+                <Copyright sx={{mt: 8, mb: 4}}/>
             </Container>
         </ThemeProvider>
     );
