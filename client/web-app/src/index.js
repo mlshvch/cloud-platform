@@ -8,6 +8,7 @@ import Dashboard from "./components/Dashboard";
 import SignUp from "./components/SignUp";
 import routes from './Routes';
 import SignIn from "./components/SignIn";
+import CreateService from "./components/CreateService"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -18,6 +19,7 @@ root.render(
               <Route path={routes.sign_in} element={<SignIn />} />
               <Route path={routes.sign_up} element={<SignUp />} />
               <Route path={routes.home} element={<Dashboard />} />
+              <Route path={routes.create_service} element={<CreateService />} />
           </Routes>
       </BrowserRouter>
   </React.StrictMode>
