@@ -354,6 +354,7 @@ DEPENDENCIES
   devise_token_auth
   docker-api (~> 2.2)
   dockly (~> 4.4)
+  git
   graphql (~> 1.12)
   graphql-docs (~> 2.1)
   graphql_devise (~> 0.18.2)

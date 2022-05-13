@@ -1,7 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  mount Sidekiq::Web => "/sidekiq"
+  mount Sidekiq::Web => '/sidekiq'
 
   mount_graphql_devise_for(
     User,
@@ -11,9 +11,10 @@ Rails.application.routes.draw do
       login: Mutations::SignInUser,
       register: Mutations::SignUpUser,
       logout: Mutations::SignOutUser
-    })
+    }
+  )
 
-  post '/graphql', to: 'graphql#execute'
+  post '/api/v1/graphql', to: 'graphql#execute'
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

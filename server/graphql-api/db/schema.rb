@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 2022_04_14_075238) do
     t.index ["service_ip"], name: "index_fullstack_applications_on_service_ip", unique: true
   end
 
-  create_table "services", force: :cascade do |t|
+  create_table "user_services", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "name", limit: 30
     t.string "endpoint"
@@ -76,5 +76,5 @@ ActiveRecord::Schema.define(version: 2022_04_14_075238) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  add_foreign_key "services", "users"
+  add_foreign_key "user_services", "users"
 end

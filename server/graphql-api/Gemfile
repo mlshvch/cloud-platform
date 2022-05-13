@@ -30,12 +30,13 @@ gem 'rubocop', '>= 1.26'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'aasm', '~> 5.2'
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'bullet', '~> 6.1', '>= 6.1.5'
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'devise', '~> 4.8', '>= 4.8.1'
   gem 'devise_token_auth'
-  gem 'dockly', '~> 4.4'
   gem 'docker-api', '~> 2.2'
+  gem 'dockly', '~> 4.4'
+  gem 'git'
   gem 'graphql', '~> 1.12'
   gem 'graphql_devise', '~> 0.18.2'
   gem 'graphql_rails', '~> 2.2'
