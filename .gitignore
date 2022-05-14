@@ -33,4 +33,5 @@ server/graphql-api/config/master.key
 
 server/graphql-api/services/*
 !server/graphql-api/services/demo/**
+server/graphql-api/user_services
 

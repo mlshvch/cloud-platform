@@ -1,20 +1,32 @@
 # frozen_string_literal: true
 
+require 'k8s'
+
 module Types
-  # QueryType Class
-  class QueryType < Types::BaseObject
-    # Add `node(id: ID!) and `nodes(ids: [ID!]!)`
-    include GraphQL::Types::Relay::HasNodeField
-    include GraphQL::Types::Relay::HasNodesField
+	# QueryType Class
+	class QueryType < Types::BaseObject
+		# Add `node(id: ID!) and `nodes(ids: [ID!]!)`
+		include GraphQL::Types::Relay::HasNodeField
+		include GraphQL::Types::Relay::HasNodesField
 
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
+		field :services, [ServiceType]
+		field :job, String do
+			argument :id, String, required: true
+		end
 
-    # TODO: remove me
-    field :test_field, String, null: false,
-                               description: 'An example field added by the generator'
-    def test_field
-      'Hello World!'
-    end
-  end
+		field :k8s, String
+
+		def services
+			Service.all
+		end
+
+		def job(id:)
+			Redis.new.get("sidekiq_job_#{id}")
+		end
+
+		def k8s
+			K8s.show_pods
+		end
+
+	end
 end
