@@ -1,18 +1,22 @@
 # frozen_string_literal: true
 
+require 'fullstack_application_service'
+
 class ConfigureServiceJob
 	include Sidekiq::Job
+	include FullstackApplicationService
 
+	# TODO REWRITE INSTANCE VARIABLES TO PARAMS_DATA ARRAY
+	
 	def perform(params)
-		change_state('')
-		@uid = params['uid'].to_s
-		@repo = params['repo']
+		change_state('preparing')
+		prepare_data(params)
 		pull
 		create_images
-		create_containers
 		connect_database if params['database']
 		create_service
 		delete_redis_record
+		save_data
 	end
 
 	private
@@ -21,35 +25,33 @@ class ConfigureServiceJob
 		change_state('pulling')
 		root = "#{Rails.root}/user_services"
 		@dir = "#{root}/#{user_to_hex}"
+		dir_name = @app.source.split('/')[-1].split('.')[0]
 		FileUtils.mkdir(@dir) unless Dir.exist?(@dir)
 		FileUtils.cd(@dir)
-		`git clone #{@repo}`
+		@dir = "#{@dir}/#{dir_name}"
+		git = Git.clone(@app.source, @dir)
+		@dir = git.dir.path
 	end
 
 	def create_images
 		change_state('creating_images')
-
-	end
-
-	def create_containers
-		change_state('creating_containers')
-		sleep 30
-		show_status
+		@app.create_dockerfile('Rails', "#{@dir}")
+		@app.image_id = create_image("#{@dir}", @name)
 	end
 
 	def connect_database
 		change_state('connecting_database')
 		sleep 30
-		show_status
 	end
 
 	def create_service
 		change_state('creating_service')
-		sleep 30
+		parse_yaml(user_to_hex[0..10], @dir, @name, @database)
+		`kubectl apply -f #{@dir}/pod.yml`
 	end
 
 	def user_to_hex
-		Digest::SHA2.hexdigest @uid
+		Digest::SHA2.hexdigest @service.user_id.to_s
 	end
 
 	def change_state(state)
@@ -60,6 +62,20 @@ class ConfigureServiceJob
 		Redis.new.del("sidekiq_job_#{jid}")
 	end
 
+	def save_data
+		@app = @app.save!
+		@service.serviceable = @app
+		@service.save!
+	end
 
+	def prepare_data(params)
+		@app = FullstackApplication.new
+		@service = Service.new
+		@service.user = User.find_by(id: params['uid'])
+		@app.source = params['repo']
+		@name = params['name']
+		@service.name = @name
+		@database = params['database']
+	end
 
 end

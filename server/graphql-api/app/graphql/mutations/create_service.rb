@@ -4,7 +4,7 @@ module Mutations
 
     argument :repo, String, required: true
     argument :name, String, required: false
-    argument :database, Boolean, required: true
+    argument :database, String, required: false
 
     def resolve(**params)
       params[:uid] = context[:current_resource].id
