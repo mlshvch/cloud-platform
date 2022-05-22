@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ruby:3.0.3
+FROM ruby:3.0.2
 RUN apt-get update && apt-get install -y npm && npm install -g yarn
 
 RUN mkdir -p /var/app
@@ -10,5 +10,5 @@ WORKDIR /var/app
 RUN bundle install
 
 EXPOSE 3000
-CMD ['rails', 'server', '-b', '0.0.0.0']
 
+CMD "bundle" "exec" "rails" "s" "-b" "0.0.0.0" "-p" "3000"

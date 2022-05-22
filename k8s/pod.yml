@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: List
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: demo-app-deployment
+    labels:
+      app:
+  spec:
+    replicas: 3
+    template:
+      metadata:
+        name: aleks-demo-app
+        labels:
+          app: aleks-demo-app
+      spec:
+        containers:
+        - name: aleks-demo-app
+          image: localhost:5000/demo-app
+          imagePullPolicy: IfNotPresent
+        restartPolicy: Always
+    selector:
+      matchLabels:
+        app: demo-app
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: demo-app-service
+  spec:
+    selector:
+      app: aleks-demo-app
+    ports:
+    - port: 3000
+    type: NodePort
