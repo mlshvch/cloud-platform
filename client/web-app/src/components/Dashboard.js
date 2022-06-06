@@ -19,10 +19,25 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import {gql, useMutation} from "@apollo/client";
+// import {gql, useMutation} from "@apollo/client";
 import {useNavigate} from "react-router-dom";
 import routes from "../Routes";
 import {useEffect, useState} from "react";
+import {
+    Add,
+    Check,
+    Close,
+    CloudDone,
+    CloudOff, Delete,
+    DiamondSharp,
+    DiamondTwoTone,
+    Javascript,
+    StopCircle, Update
+} from "@mui/icons-material";
+import {green, red, yellow} from "@mui/material/colors";
+import {CircularProgress, LinearProgress, Skeleton, ToggleButton} from "@mui/material";
+import IOSSwitch from "./iosToggleSwitch";
+import CustomCircularProgress from "./CustomCircularProgress";
 
 function Copyright(props) {
     return (
@@ -36,6 +51,50 @@ function Copyright(props) {
         </Typography>
     );
 }
+
+let new_service = {
+    name: "",
+    technology: "",
+    type: '',
+    state: "",
+    endpoint: ""
+}
+
+const pending_services = [{
+    name: "demo_app",
+    technology: "Ruby on Rails",
+    type: 'FullStack Application',
+    state: "creating images",
+    creating: true
+},]
+
+
+const services_list = [
+    {
+        name: "test_app",
+        technology: "Ruby on Rails",
+        type: 'FullStack Application',
+        state: "suspended",
+        endpoint: "10.106.119.102:30090"
+    },
+    {
+        name: "news_portal",
+        technology: "Ruby on Rails",
+        type: 'FullStack Application',
+        state: "suspended",
+        endpoint: "10.106.114.122:32343"
+
+    },
+    {
+        name: "social_app",
+        technology: "Node.js",
+        type: 'FullStack Application',
+        state: "running",
+        endpoint: "10.106.108.100:31540"
+
+    }
+]
+
 
 const drawerWidth = 240;
 
@@ -74,56 +133,86 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
                     easing: theme.transitions.easing.sharp,
                     duration: theme.transitions.duration.leavingScreen,
                 }),
-                width: theme.spacing(7),
+                width: theme.spacing(0),
                 [theme.breakpoints.up('sm')]: {
-                    width: theme.spacing(9),
+                    width: theme.spacing(0),
                 },
             }),
         },
     }),
 );
 
-const LOGOUT = gql`
+const LOGOUT = '' /* gql`
     mutation UserLogout() {
         SignOutUser {
             status
         }
     }
 `;
-
-const SERVICES = gql`
+*/
+const SERVICES = '' /* gql`
     mutation GetServices() {
         GetServices {
             status
         }
     }
 `;
+*/
 
-const mdTheme = createTheme();
+let theme_options = {};
+
+const current_date = new Date();
+const hour = current_date.getHours()
+
+if (hour >= 20 && hour < 7) {
+    theme_options = {
+        palette: {
+            mode: 'dark',
+        },
+    }
+} else {
+    theme_options = {}
+}
+
+const mdTheme = createTheme(theme_options);
 
 
 function DashboardContent() {
     const navigate = useNavigate()
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(() => {
+            return (services_list.length !== 0)
+        }
+    );
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
-    const [exit] = useMutation(LOGOUT);
-
-    const logout = () => {
-        exit()
-            .then(() => localStorage.removeItem('cred'))
-            .then(navigate(routes.home))
+    const [notifications, setNotifications] = React.useState(true)
+    const toggleList = () => {
+        setNotifications(!notifications)
     }
 
+    const [currentService, setCurrentService] = useState(new_service)
+
+// useEffect(async () => {
+//     setInterval(getData, 5000);
+//     }
+// )
+
+    const chooseService = (service) => {
+        setCurrentService(service)
+    }
+
+
+// const [exit] = useMutation(LOGOUT);
+
+// const logout = () => {
+//     exit()
+//         .then(() => localStorage.removeItem('cred'))
+//         .then(navigate(routes.home))
+// }
+
     const [services, setServices] = useState([]);
-
-
-    useEffect(async () => {
-        setInterval(getData, 5000);
-        }
-    )
 
     async function getData() {
         try {
@@ -171,14 +260,16 @@ function DashboardContent() {
                             noWrap
                             sx={{flexGrow: 1}}
                         >
-                            Dashboard
+                            <IconButton href={routes.landing}>ArtCloud</IconButton>
                         </Typography>
+                        <IconButton color="inherit" href={routes.create_service}>
+                            <Add/>
+                        </IconButton>
                         <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
+                            <Badge color="secondary">
                                 <NotificationsIcon/>
                             </Badge>
                         </IconButton>
-
                     </Toolbar>
                 </AppBar>
                 <Drawer variant="permanent" open={open}>
@@ -190,6 +281,14 @@ function DashboardContent() {
                             px: [1],
                         }}
                     >
+                        <Typography
+                            component="h1"
+                            variant="h6"
+                            color="inherit"
+                            noWrap
+                            sx={{flexGrow: 1}}
+                        >User Services</Typography>
+
                         <IconButton onClick={toggleDrawer}>
                             <ChevronLeftIcon/>
                         </IconButton>
@@ -198,6 +297,36 @@ function DashboardContent() {
                     <List component="nav">
                         <Divider sx={{my: 1}}/>
                     </List>
+                    {services_list.map((service) => (
+                        (service.name === currentService.name &&
+                            <Button disableElevation variant="contained">{service.name}</Button>) ||
+                        <Button variant={"outlined"}
+                                onClick={() => chooseService(service)}
+                        >{service.name}
+
+                            {service.state === 'suspended' && <CloudOff sx={{color: red[500], fontSize: "large"}}/>}
+                            {service.state === 'running' && <CloudDone sx={{color: green[500], fontSize: "large"}}/>}
+                        </Button>
+                    ))}
+
+                    <Divider color={mdTheme.palette.common.black}/>
+                    <Divider color={mdTheme.palette.common.black}/>
+                    <Divider color={mdTheme.palette.common.black}/>
+                    <Divider color={mdTheme.palette.common.black}/>
+                    <Divider color={mdTheme.palette.common.black}/>
+                    <Divider color={mdTheme.palette.common.black}/>
+
+
+                    {pending_services.map((service) => (
+                        (service === currentService &&
+                            <Button disableElevation variant="contained">{service.name}</Button>) ||
+                        <Button variant={"outlined"}
+                                onClick={() => chooseService(service)}
+                        >{service.name} <CircularProgress size={15}/>
+
+                        </Button>
+                    ))}
+
                 </Drawer>
                 <Box
                     component="main"
@@ -210,11 +339,95 @@ function DashboardContent() {
                         height: '100vh',
                         overflow: 'auto',
                     }}
-                >
-                    <Toolbar/>
+                ><Toolbar/>
                     <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} md={8} lg={9}>
+                            <Grid item xs={12} md={6} lg={6}>
+                                <Paper
+                                    sx={{
+                                        p: 2,
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        height: 240,
+                                    }}
+                                >
+                                    {currentService.creating &&
+                                        <Grid container alignItems={"center"} justifyContent={"center"}>
+                                            <Typography
+                                                component="h1"
+                                                variant="h6"
+                                                color="inherit"
+                                                noWrap
+                                                sx={{flexGrow: 1}}>
+                                                {currentService.state}
+                                            </Typography>
+                                            <CircularProgress/>
+
+                                        </Grid>}
+
+                                    {(!currentService.creating && currentService.name !== null &&
+                                        <Box>
+                                            <ul>
+                                                <Typography
+                                                    component="h1"
+                                                    variant="h6"
+                                                    color="inherit"
+                                                    noWrap
+                                                    sx={{flexGrow: 1}}
+                                                ><u>Name</u>: {currentService.name} </Typography>
+                                            </ul>
+                                            <ul>
+                                                <Typography
+                                                    component="h1"
+                                                    variant="h6"
+                                                    color="inherit"
+                                                    noWrap
+                                                    sx={{flexGrow: 1}}
+                                                ><u>Technology</u>: {currentService.technology} {(currentService.technology === "Ruby on Rails" &&
+                                                        <DiamondSharp
+                                                            sx={{color: red[500], fontSize: "large"}}/>) ||
+                                                    <Javascript sx={{color: green[500], fontSize: 20}}/>} </Typography>
+                                            </ul>
+                                            <ul>
+                                                <Typography
+                                                    component="h1"
+                                                    variant="h6"
+                                                    color="inherit"
+                                                    noWrap
+                                                    sx={{flexGrow: 1}}
+                                                ><u>Type</u>: {currentService.type} </Typography>
+                                            </ul>
+                                            <ul>
+                                                <Typography
+                                                    component="h1"
+                                                    variant="h6"
+                                                    color="inherit"
+                                                    noWrap
+                                                    sx={{flexGrow: 1}}
+                                                ><u>State</u>: {currentService.state} {currentService.state === 'active' &&
+                                                    <CloudDone sx={{color: green[500], fontSize: "large"}}/>}
+                                                    {currentService.state === 'suspend' &&
+                                                        <CloudOff sx={{color: red[500], fontSize: "large"}}/>}
+                                                </Typography>
+                                            </ul>
+                                        </Box>)}
+                                    {services_list.length === 0 &&
+                                        <Typography>There are no any services yet :(</Typography> ||
+
+                                        currentService.name === null &&
+                                        <Container>
+                                            <Skeleton variant="rectangular"/>
+                                            <Skeleton variant="text"/>
+                                            <Skeleton variant="text"/>
+                                            <Skeleton variant="text"/>
+                                            <Skeleton variant="text"/>
+                                        </Container>
+                                    }
+
+
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={12} md={6} lg={6}>
                                 <Paper
                                     sx={{
                                         p: 2,
@@ -223,30 +436,43 @@ function DashboardContent() {
                                         height: 240,
                                     }}
                                 >
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} md={4} lg={3}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
+                                    {currentService.name !== null && !currentService.creating &&
+                                        <Container>
+                                            <Typography component="h1"
+                                                        variant="h6"
+                                                        color="inherit"
+                                                        noWrap
+                                                        sx={{flexGrow: 1}}
+                                            >
+                                                Launch Service <IOSSwitch checked={currentService.state === "running"}/>
+                                            </Typography>
+                                            <Typography component="h1"
+                                                        variant="h6"
+                                                        color="inherit"
+                                                        noWrap
+                                                        sx={{flexGrow: 1}}
+                                            > Endpoint:
+                                                <Button
+                                                    href={`https://${currentService.endpoint}`}
+                                                    disabled={currentService.state === 'suspended'}
+                                                >
+                                                    {currentService.endpoint}
+                                                </Button>
+                                            </Typography>
+                                            <Typography>
+                                                <Button variant={"contained"} color={"warning"}>Update
+                                                    Service</Button></Typography>
+                                            <Typography>
+                                                <Button variant={"outlined"} color={"error"}>Delete
+                                                    Service</Button>
+                                            </Typography>
+                                        </Container>}
                                 </Paper>
                             </Grid>
                         </Grid>
-                        <Copyright sx={{pt: 4}}/>
                     </Container>
                 </Box>
             </Box>
-            <Button color='secondary' onClick={logout}>LOGOUT</Button>
-            <p>{services}</p>
         </ThemeProvider>
     );
 }

@@ -17,7 +17,37 @@ module Types
 		field :k8s, String
 
 		def services
-			Service.all
+			[
+				{
+					id: 4,
+					name: "demo_app",
+					technology: "Ruby on Rails",
+					serviceable_type: 'FullStack Application',
+					state: "suspended",
+					access: 'public',
+					endpoint: "10.106.119.102:30090"
+				},
+				{
+					id: 7,
+					name: "news_portal",
+					technology: "Ruby on Rails",
+					serviceable_type: 'FullStack Application',
+					state: "suspended",
+					access: 'private',
+					endpoint: "10.106.114.122:32343"
+
+				},
+				{
+					id: 10,
+					name: "social_app",
+					technology: "Node.js",
+					serviceable_type: 'FullStack Application',
+					state: "running",
+					access: 'private',
+					endpoint: "10.106.108.100:31540"
+
+				}
+			]
 		end
 
 		def job(id:)

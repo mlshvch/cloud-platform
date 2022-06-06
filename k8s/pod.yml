@@ -12,12 +12,12 @@ items:
     replicas: 3
     template:
       metadata:
-        name: aleks-demo-app
+        name: demo-app
         labels:
-          app: aleks-demo-app
+          app: demo-app
       spec:
         containers:
-        - name: aleks-demo-app
+        - name: demo-app
           image: localhost:5000/demo-app
           imagePullPolicy: IfNotPresent
         restartPolicy: Always
@@ -30,7 +30,7 @@ items:
     name: demo-app-service
   spec:
     selector:
-      app: aleks-demo-app
+      app: demo-app
     ports:
-    - port: 3000
+    - port: port
     type: NodePort
